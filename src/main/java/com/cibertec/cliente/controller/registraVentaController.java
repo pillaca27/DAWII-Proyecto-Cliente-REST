@@ -145,7 +145,7 @@ public class registraVentaController {
 		map.put("empleado", empleado);
 		
 		JasperPrint repot = JasperFillManager.fillReport(compileReport, map, jb);
-		JasperExportManager.exportReportToPdfFile(repot, "invoice.pdf");
+		JasperExportManager.exportReportToPdfFile(repot, "venta_"+codigo+".pdf");
 		
 		byte[] data = JasperExportManager.exportReportToPdf(repot);
 		
