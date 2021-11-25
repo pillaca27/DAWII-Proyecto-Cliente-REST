@@ -8,7 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
 
 import com.cibertec.cliente.entity.Cargo;
+import com.cibertec.cliente.entity.Cliente;
 import com.cibertec.cliente.entity.Distrito;
+import com.cibertec.cliente.entity.Empleado;
+import com.cibertec.cliente.entity.Venta;
 
 @Controller
 @RequestMapping("/consulta")
@@ -52,4 +55,18 @@ public class ConsultaController {
 		return "empleado/consultaEmpleado";
 	}
 
+	@RequestMapping("/Venta")
+	public String consultaventa(Model model){
+		try {
+			RestTemplate rt=new RestTemplate();
+			List<Cliente[]> listaCargo=rt.getForObject(URL+"/cliente/listar", List.class);
+
+			model.addAttribute("clientes",listaCargo);
+
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "empleado/consultaVenta";
+	}
 }
