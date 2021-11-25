@@ -208,21 +208,30 @@
 	<script th:src="@{/resources/alertifyjs/alertify.js}"></script>
 	<script th:src="@{/resources/alertifyjs/alertify.min.js}"></script>
 	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+	<script src="https://cdn.bootcdn.net/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script> 
+	<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
+	<script src="https://kit.fontawesome.com/08aaa156fb.js" crossorigin="anonymous"></script>
+	<script	src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script> 
+	<script th:src="@{/plugins/bs-custom-file-input/bs-custom-file-input.min.js}"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 	<script>
-	
 	//Al pulsar el botón cliente
 	$(document).on("click","#id_btnVenta",function(){
-		muestraDetalle();
+		var id=$(this).parents("tr").find("td")[0].innerHTML;
+		muestraDetalle(id);
 		$("#idMuestraDetalle").modal("show");
 	});
-	
-		let URL="http://localhost:8091/venta";
+
+		let URL="http://localhost:8091/";
 		$(document).on("click","#btn-consultar",function(){
 		$("#tableVentas tbody").empty();
 		let nom=$("#idDNI").val();
 		
-		axios.get(URL+"/buscaremp/"+nom) //here
+		axios.get(URL+"venta/buscaremp/"+nom) //here
 		  .then(function (response) {
 			console.log(response);
 			for(let i=0;i<response.data.length;i++){
@@ -242,13 +251,12 @@
 		  })
 	})
 	
-		function muestraDetalle(){
+		function muestraDetalle(id){
+			
 			event.preventDefault();
-			let cod=$(this).parents("tr").find("td")[0].innerHTML;
-
 			//limpiar la tabla
 			$("#id_table_detalles tbody").empty();
-			axios.get(URL+"/ventadetalle/buscar/"+cod)
+			axios.get(URL+"ventadetalle/buscar/"+id)
 	  			.then(function (response) {
 				console.log(response);
 				for(let i=0;i<response.data.length;i++){
@@ -257,10 +265,7 @@
 						+response.data[i].cantidad+"</td><td>"
 						+response.data[i].subtotal+"</td><td></tr>");
 				}
-				
-				
-				
-			  })
+				 })
 			  .catch(function (error) {
 			    console.log(error);
 			  })
