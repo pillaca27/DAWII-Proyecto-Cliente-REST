@@ -101,32 +101,37 @@
 		                  <input type="text" class="form-control form-control-border" id="id_pedido_codigoVenta" th:field="*{codigo}">
 		                </div>
 		                <div class="form-group">
-		                  <label for="exampleInputBorderWidth2">Dni</label>
-		                  <input type="text" name="idCliente" id="id_cliente_id" class="form-control form-control-border border-width-2" th:field="*{cliente.dni}">
+		                  <label for="exampleInputBorderWidth2">Cliente</label>
+		                  <input type="text" name="idCliente" id="id_cliente_nombre" class="form-control form-control-border border-width-2" placeholder="Seleccione el cliente" readonly="readonly">
+		                  <input id="id_cliente_id" type="hidden" th:field="*{cliente.dni}">
+		
 		                </div>
 		                <div class="form-group">
 								<button type="button" id="id_btnCliente" data-toggle='modal' class='btn btn-primary'>BUSCA CLIENTE</button>
 						</div> 
 
 		                <div class="form-group">
-		                  <label for="exampleInputRounded0">Codigo</label>
-		                  <input type="text" name="idEmpleado" id="id_empleado_id" class="form-control rounded-0" th:field="*{empleado.codEmp}">
+		                  <label for="exampleInputRounded0">Empleado</label>
+		                  <input type="text" name="idEmpleado" id="id_empleado_nombre" class="form-control form-control-border border-width-2" placeholder="Seleccione el empleado" readonly="readonly">
+		                  <input id="id_empleado_id" type="hidden" th:field="*{empleado.codEmp}">
 		                </div>
-		                 
+		                <div class="form-group">
+								<button type="button" id="id_btnEmpleado" data-toggle='modal' class='btn btn-primary'>BUSCA EMPLEADO</button>
+							</div>
+						 
 		                
 		                <div class="form-group">
 		                  <label for="exampleInputRounded0">Fecha de Venta</label>
 		                  <input type="date" name="fechaEntrega" id="id_pedido_fechaEntrega" class="form-control form-control-border" placeholder="Ingrese la fecha de entrega" th:field="*{fecha_ped}">
 		                </div>
-		                <div class="form-group">
-								<button type="button" id="id_btnEmpleado" data-toggle='modal' class='btn btn-primary'>BUSCA EMPLEADO</button>
-							</div>
-						</div> 
+		               
 		                
-		              <div class="card-footer">
+		              <div class="card-footer" style="text-align: center;">
                   			<button type="submit" id="Guardar" class="btn btn-primary"><i class="fas fa-save"></i>  REGISTRA PEDIDO</button>
+                            <a th:href="@{/Venta/PDF}" id="btn_pdf" target="_blank"  class="btn btn-success">Exportar PDF</a>
                       </div>
-		              <a th:href="@{/Venta/PDF}" target="_blank"  class="btn btn-success">Exportar PDF</a>
+                      </div>
+		              
 		           </form>
 	              <!-- /.card-body -->
 	            </div>
@@ -292,6 +297,7 @@
 				</div>
 			</div>
 		</div>
+		
            </div>
 	    </div>
 	   </div>
@@ -342,6 +348,17 @@
 			});
 			
 		});
+		
+		//Al pulsar el botón pdf
+		$("#btn_pdf").click(function (){
+			var codigo = $("#id_pedido_codigoVenta").val();
+			var nombre = $("#id_cliente_nombre").val();
+			var empleado = $("#id_empleado_nombre").val();
+			var fecha_ped = $("#id_pedido_fechaEntrega").val();
+			console.log(codigo);
+			window.open('http://localhost:8092/Venta/PDF?codigo='+codigo+"&nombre="+nombre+"&empleado="+empleado+"&fecha_ped="+fecha_ped, '_blank');
+		});
+		
 		
 		//Al pulsar el botón cliente
 		$("#id_btnCliente").click(function (){

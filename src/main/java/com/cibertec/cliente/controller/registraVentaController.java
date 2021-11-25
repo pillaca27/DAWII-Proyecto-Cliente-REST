@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -127,12 +128,22 @@ public class registraVentaController {
 	}
 	
 	@RequestMapping("/PDF")
-	public ResponseEntity<byte[]> index() throws Exception, JRException {
+	public ResponseEntity<byte[]> index(@RequestParam String codigo, @RequestParam String nombre, @RequestParam String empleado, @RequestParam String fecha_ped) throws Exception, JRException {
+		double monto = 0;
+		for(Seleccion a : seleccionados) {
+			monto += a.getCantidad() * a.getPrecio();
+		}
 		
 		JRBeanCollectionDataSource jb = new JRBeanCollectionDataSource(seleccionados);
 		JasperReport compileReport = JasperCompileManager.compileReport(new FileInputStream("src/main/resources/invoice.jrxml"));
 		
 		HashMap<String, Object> map = new HashMap<>();
+		map.put("monto", monto);
+		map.put("codigo", codigo);
+		map.put("nombre", nombre);
+		map.put("fecha_ped",fecha_ped);
+		map.put("empleado", empleado);
+		
 		JasperPrint repot = JasperFillManager.fillReport(compileReport, map, jb);
 		JasperExportManager.exportReportToPdfFile(repot, "invoice.pdf");
 		
