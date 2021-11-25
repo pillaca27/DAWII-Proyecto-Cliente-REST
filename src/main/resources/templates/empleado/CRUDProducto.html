@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="./plantilla/UITemplateEmpleado :: head">
+<meta charset="UTF-8">
+<title>Crud Cargo</title>
+
+</head>
+<style>
+
+	.modal-header, h4, .close {
+		background-color: #286090;
+		color: white !important;
+		text-align: center;
+		font-size: 20px;
+	}
+	.help-block{
+	 color: red;
+	 /*display: none;*/
+	}
+	.form-group.has-error .form-control-label {
+	  color: red;
+	}
+	.form-group.has-error .form-control {
+	  border: 1px solid red;
+	  box-shadow: 0 0 0 0.2rem rgba(250, 16, 0, 0.18);
+	}
+	
+
+
+</style>
+<body class="hold-transition sidebar-mini layout-fixed" data-panel-auto-height-mode="height">
+ 	<div class="wrapper">
+
+    <div th:replace="./plantilla/UITemplateEmpleado :: arriba"></div>
+    
+	<div th:replace="./plantilla/UITemplateEmpleado :: derecha"></div>
+	
+		<div class="content-wrapper iframe-mode" data-widget="iframe" data-loading-screen="750">
+		     <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">CRUD DE PRODUCTO</h3>
+              </div>
+              
+              <h3 class="text-center mt-4">LISTA DE PRODUCTO</h3>
+			
+			<button type="button" class="btn btn-warning mt-5" data-toggle="modal" data-target="#modalMedicamento" id="btn-nuevo">
+			 <i class="far fa-file"></i> NUEVO PRODUCTO
+			</button>
+			<div class=" mt-2">
+	
+				<table class="table table-striped table-bordered mt-5" id="tableViajes">
+							  <thead>
+							 <tr>
+					        <th>CODIGO</th>
+					        <th>NOMBRE</th>
+					        <th>PRECIO</th>
+					        <th>STOCK</th>
+					        <th>MARCA</th>    
+					    	<th>EDITAR</th>
+					        <th>ELIMINAR</th>  
+					   </tr>
+							  </thead>
+							  <tbody>
+						   <tr th:each="bean:${productos}">
+							<td th:text="${bean.codigo}"></td>
+							<td th:text="${bean.nombre}"></td>
+							<td th:text="${bean.precio}"></td>
+							<td th:text="${bean.stock}"></td>
+							<td th:text="${bean.marca.nombre}"></td>
+		        		    <td><a class="btn btn-info btn-datos" data-toggle="modal" data-target="#modalMedicamento">Ver Datos</a></td>
+							<td><a class="btn btn-danger btn-eliminar"><i class="far fa-trash-alt"></i></a></td>
+
+								  
+								
+								</tr>
+							  </tbody>
+				</table>
+			</div>
+			<!-- begin #modal-dialog : MODAL MEDICAMENTO-->
+			<div class="modal fade" id="modalMedicamento" data-backdrop="static" 
+							data-keyboard="false" tabindex="-1" 
+							aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-dialog-centered modal-login modal-lg" >					
+							<div class="modal-content">
+								<div class="modal-header bg-blue-darker">
+									<h4 class="modal-title text-white">CARGO</h4>
+								</div>
+								<div class="modal-body">
+									<form method="POST" id="idRegistra" th:action="@{/CRUDproducto/registrar}" th:object="${producto}">	
+										<div class="container">
+											<div class="row">
+												    <div class="form-group">
+                    <label for="exampleInputEmail1">CODIGO</label>       <i class="fas fa-file-signature form-control-feedback2"></i>	
+                    
+                    <input type="text" class="form-control" id="idCodigo" placeholder="Ingresar Codigo" th:field="*{codigo}">
+                   
+                  </div>
+                 <div class="form-group has-feedback col-md-4">
+				<label for="exampleInputEmail1"><b>NOMBRE</b></label>
+				<i class="fas fa-pen-fancy form-control-feedback2"></i>
+				<input type="text" class="form-control" id="idNombres"  name="nombre" placeholder="Ingresar Nombres" th:field="*{nombre}">	
+				</div>
+				<div class="form-group has-feedback col-md-4">
+				<label for="exampleInputEmail1"><b>PRECIO</b></label>
+				<i class="fas fa-money-check-alt form-control-feedback2"></i>
+				<input type="text" class="form-control" id="idPrecio"  name="precio" placeholder="Ingresar Precio" th:field="*{precio}">														
+				</div>
+				<div class="form-group has-feedback col-md-4">
+				<label for="exampleInputEmail1"><b>STOCK</b></label>
+				<i class="fas fa-money-check-alt form-control-feedback2"></i>
+				<input type="text" class="form-control" id="idStock"  name="stock" placeholder="Ingresar Stock" th:field="*{stock}">														
+				</div>	
+											    		
+                 <div class="form-group has-feedback col-md-6">	
+					<label for="exampleInputEmail1"><b>DISTRITO</b></label>
+					<i class="fas fa-prescription-bottle-alt form-control-feedback2"></i>
+					<select class="form-control" name="marca" id="idMarca"th:field="*{marca.codigo}">
+					
+					<option value="0">[Seleccione Marca]</option>
+					<option th:each="bean:${marcas}" 
+					th:utext="${bean.nombre}"
+					th:value="${bean.codigo}">
+					 </select>
+				 </div>
+												 
+												 </div>
+												 </div>		
+											<div class="col-md-12 text-center mt-4"> 										
+											<button type="submit" id="Guardar" class="btn btn-Success"><i class="fas fa-save"></i> Registrar</button>
+											<button type="button" id="btn-cerrar" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-undo-alt"></i> Cancelar</button>
+										</div> 																			
+									</form>
+								</div>
+							</div>
+						</div>
+		</div>
+		<!-- FIN Modal MEDICAMENTO-->	
+	
+	
+		</div>
+		</div>
+			
+	</div>
+              
+              
+       
+              
+              
+              
+              
+              
+              
+              
+              
+              	<div th:insert="plantilla/UITemplateEmpleado :: scripts"></div>
+       <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+	<script src="https://cdn.bootcdn.net/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script> 
+	<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
+	<script src="https://kit.fontawesome.com/08aaa156fb.js" crossorigin="anonymous"></script>
+	<script	src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+	<script th:src="@{/plugins/bs-custom-file-input/bs-custom-file-input.min.js}"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	
+	
+		<script th:inline="javascript" th:if="${MENSAJE!=null}">
+		var m=/*[[${MENSAJE}]]*/ null;
+		Swal.fire({
+		  icon: 'success',
+		  title: m,
+		  confirmButtonText:'Cerrar'
+		 })
+	</script>
+
+	<script>
+	
+	let URL="http://localhost:8091/producto";
+	
+	
+	$(document).on("click",".btn-datos",function(){
+		let cod,nom,pre,stock;
+		cod=$(this).parents("tr").find("td")[0].innerHTML;
+		nom=$(this).parents("tr").find("td")[1].innerHTML;
+		pre=$(this).parents("tr").find("td")[2].innerHTML;
+		stock=$(this).parents("tr").find("td")[3].innerHTML;
+
+
+		$("#idCodigo").val(cod);
+		$("#idNombres").val(nom);
+		$("#idPrecio").val(pre);
+		$("#idStock").val(stock);
+		
+		axios.get(URL+"/buscar/"+cod)
+		  .then(function (response) {
+			console.log(response);
+			document.querySelector("#idMarca").value=response.data.marca.codigo;
+		  })
+		  .catch(function (error) {
+		    console.log(error);
+		  })
+
+	})
+	
+	
+	
+	$(document).on("click",".btn-eliminar",function(e){
+		event.preventDefault();
+		let id=$(this).parents("tr").find("td")[0].innerHTML;
+
+			
+			 $.ajax({
+
+			        type: "DELETE",
+			        url: "http://localhost:8091/producto/eliminar/"+id,
+
+			        success: function () {
+					location.reload(true);
+			        },
+
+			        failure: function (errMsg) {
+			            console.log(errMsg.toString())
+			        }
+			    });	
+	})		
+	
+	</script>
+	<script>
+
+
+	
+
+	//asignar evento click al botón con ID "btn-cerrar"
+	$(document).on("click","#btn-cerrar",function(){
+			//reiniciar validación al formulario con ID "idRegistra" 
+			$('#idRegistra').data("bootstrapValidator").resetForm(true);
+			//resetear "limpiar cajas" que existen el formulario con ID "idRegistra"
+			$('#idRegistra').trigger("reset");	
+			//mostrar en la caja con ID "idCodigo" el valor de "0"
+			$("#idCodigo").val(0);
+	})
+
+
+	
+
+	</script>
+	
+		<script type="text/javascript">    
+	  
+	$(document).ready(function(){     
+	
+	        $('#idRegistra').bootstrapValidator({     
+	        	feedbackIcons: {
+	                valid: 'glyphicon glyphicon-ok',
+	                invalid: 'glyphicon glyphicon-remove',
+	                validating: 'glyphicon glyphicon-refresh'
+	            },
+	        	 fields:{
+	        		 
+	        		 codigo: {
+	     	    		selector:'#idCodigo',   
+	                    validators: {    
+	                        notEmpty: {    
+	                            message: 'Ingrese codigo de Producto .Ejemplo : PRO001'    
+	                        }      
+	                    }    
+	                },   
+	                nombre: {
+	     	    		selector:'#idNombres',       
+	                    validators: {    
+	                        notEmpty: {    
+	                            message: 'Ingrese nombre'    
+	                        },
+	                        stringLength :{
+	     	                	message:'El nombre es de 15 a 30 caracteres',
+	     	                	min : 15,
+	     	                	max : 30
+	     	                },
+	                    }  
+	                },
+	                precio: {
+	     	    		selector:'#idPrecio',   
+	     	    		validators: {
+	     	            	notEmpty: {
+	     	                    message: 'El precio es un campo obligatorio'
+	     	                },
+	     	                lessThan: {
+	     		                value: 2000,
+	     		                inclusive: true,
+	     		                message: 'El precio es menor a 2000'
+	     		            },
+	     		            greaterThan: {
+	     		                value: 1000,
+	     		                inclusive: true,
+	     		                message: 'El precio es mayor a 1000'
+	     		            }
+	     	            }  
+	                }, 
+	                
+	                stock: {
+	     	    		selector:'#idStock',   
+	                    validators: {    
+	                        notEmpty: {    
+	                            message: 'Ingrese un Stock'    
+	                        }      
+	                    }    
+	                },
+	              
+	                marca: {
+	            		selector : '#idMarca',
+	                    validators: {
+	                    	notEmpty: {
+	                            message: 'Selecciona Marca'
+	                        }
+	                    }
+	                },
+	        	 }
+	        });   				
+	    });    	
+	</script> 
+</body>
+</html>

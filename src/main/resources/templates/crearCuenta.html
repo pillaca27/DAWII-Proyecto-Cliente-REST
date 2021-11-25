@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Registrate</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+<style>
+	.modal-header, h4, .close {
+		background-color: #286090;
+		color: white !important;
+		text-align: center;
+		font-size: 20px;
+	}
+	.help-block{
+	 color: red;
+	 /*display: none;*/
+	}
+	.form-group.has-error .form-control-label {
+	  color: red;
+	}
+	.form-group.has-error .form-control {
+	  border: 1px solid red;
+	  box-shadow: 0 0 0 0.2rem rgba(250, 16, 0, 0.18);
+	}
+	
+	.alertify .ajs-dialog {
+	    top: 50%;
+	    transform: translateY(-50%);
+	    margin: auto;
+	}
+	
+	.ajs-header{
+		background-color: #286090 !important;
+		color: white !important;
+		/*text-align: center;*/
+		font-size: 18px;
+		font-weight: bold;
+	}
+	.ajs-ok{
+		color: #fff;
+	    background-color: #007bff;
+	    border-color: #007bff;
+	}
+	.ajs-cancel{
+		color: #fff;
+	    background-color: #dc3545;
+	    border-color: #dc3545;
+	}
+	.btn-primary{
+	background-color: #286090 !important;
+	}
+	.dataTables_length, .dataTables_info{
+		display: none;
+	}
+	.modal-lg, .modal-xl {
+		max-width: 900px;
+		max-height: 800px;
+	}
+	
+	.form-control-feedback2 {
+	  margin:1px;
+	  position: absolute;
+	  padding: 10px;
+	  pointer-events: none;
+	  background-color: #e9ecef;
+	  border-style: none;
+	}
+	.form-control-feedback3 {
+	  margin:1px;
+	  position: absolute;
+	  margin-left:225px;
+	  padding: 10px;
+	  pointer-events: none;
+	  background-color: #e9ecef;
+	  border-style: none;
+	}
+	.form-control {
+	  padding-left: 40px!important;
+	}
+	/*.toast-succes{
+		width: 120px;
+	}*/
+</style> 
+</head>
+<body>
+	<div class="container">
+
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Registrate</h5>
+				</div>
+				<div class="modal-body">
+					<form method="POST" id="idRegistra" th:object="{usuario}" th:action="@{/registrarUsuario}">
+						<div class="container">
+							<div class="row">
+								<div class="form-group has-feedback col-md-12">
+									<label for="exampleInputEmail1"><b>Descripción</b></label><br>
+									<i class="fas fa-file-signature form-control-feedback2"></i> 
+									<input type="text" class="form-control" id="idDescripcion" placeholder="Ingresar la descripción" th:field="*{descripcion}">
+								</div>
+								<div class="form-group has-feedback col-md-12">
+									<label for="exampleInputEmail1"><b>Precio</b></label><br>
+									<i class="fas fa-pen-fancy form-control-feedback2"></i> 
+									<input type="text" class="form-control" id="idPrecio"  placeholder="Ingresar precio" th:field="*{precio}">
+								</div>
+								<div class="form-group has-feedback col-md-12">
+									<label for="exampleInputEmail1"><b>Stock</b></label><br> <i
+										class="fas fa-money-check-alt form-control-feedback2"></i> 
+										<input type="text" class="form-control" id="idStock"  placeholder="Ingresar el stock" th:field="*{stock}">
+								</div>
+								<div class="form-group has-feedback col-md-12">
+									<label for="exampleInputEmail1"><b>Marca</b></label><br>
+									<i class="fas fa-prescription-bottle-alt form-control-feedback2"></i>
+									<select class="form-control" id="idMarca" name="marca" th:field="*{marca.codigo}">
+										<option value="0">[Seleccione Tipo]</option>
+										<option th:each="bean:${marcas}"
+										        th:utext="${bean.nombre}"
+										        th:value="${bean.codigo}">
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12 text-center mt-4">
+							<button type="submit" id="Guardar" class="btn btn-primary">
+								<i class="fas fa-save"></i> Registrar
+							</button>
+						</div>
+					</form>
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+	<script src="https://cdn.bootcdn.net/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script> 
+	<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
+	<script src="https://kit.fontawesome.com/08aaa156fb.js" crossorigin="anonymous"></script>
+	<script	src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+	
+	<script th:inline="javascript" th:if="${MENSAJE!=null}">
+		//obtener atributo MENSAJE
+		var mensaje=/*[[${MENSAJE}]]*/ null;
+		
+		toastr.success(mensaje, toastr.options = {
+			"timeOut": "2000",
+			"positionClass " : " toast-top-right ",
+		});
+	
+	</script>
+	
+	
+	
+<!--
+	
+	<script type="text/javascript">    
+	    $(document).ready(function(){     
+	
+	        $('#idRegistra').bootstrapValidator({     
+	        	feedbackIcons: {
+	                valid: 'glyphicon glyphicon-ok',
+	                invalid: 'glyphicon glyphicon-remove',
+	                validating: 'glyphicon glyphicon-refresh'
+	            },
+	        	 fields:{	        		 
+	        		 Nombres: {
+	     	    		selector:'#idDescripcion',   
+	                    validators: {    
+	                        notEmpty: {    
+	                            message: 'Ingrese nombre'    
+	                        },
+	                        stringLength : {
+                                message : 'La descripción es de 3 a 30 caracteres',
+                                min : 3,
+                                max : 30
+                            }
+	                    }    
+	                },   
+	                Precio: {
+	     	    		selector:'#idPrecio',       
+	                    validators: {    
+	                        notEmpty: {    
+	                            message: 'Ingrese el precio'    
+	                        },
+	                        regexp: {    
+	                            regexp: /^\d{5}$/,
+	                            message: 'Formato entero - '
+	                        },
+                            greaterThan : {
+                                value : 10000,
+                                inclusive : true,
+                                message : 'El precio es mayor a 10000'
+                            },
+                            lessThan : {
+                                value : 25000,
+                                inclusive : true,
+                                message : 'El precio es menor a 25000'
+                            },
+	                    }    
+	                },    
+	                Stock: {
+	     	    		selector:'#idStock',      
+	                    validators: {    
+	                        notEmpty: {    
+	                            message: 'Ingrese el stock'    
+	                        },
+	                        greaterThan : {
+                                value : 1,
+                                inclusive : true,
+                                message : 'El stock es mayor a 0'
+                            },
+                            lessThan : {
+                                value : 10,
+                                inclusive : true,
+                                message : 'El stock es menor o igual 10'
+                            },
+	                    }    
+	                },
+	                marca: {
+	     	    		selector:'#idMarca',   
+	                    validators: {    
+	                        notEmpty: {    
+	                            message: 'Seleccione una marca'    
+	                        },
+	                        greaterThan : {
+                                value : 1,
+                                inclusive : true,
+                                message : 'Selecciones una marca'
+                            },
+	                    }    
+	                } 
+	        	 }
+	        });   				
+	    });    
+	</script>   
+	 -->
+</body>
+</html>
