@@ -1,13 +1,18 @@
 package com.cibertec.cliente.controller;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,6 +24,14 @@ import com.cibertec.cliente.entity.Venta;
 import com.cibertec.cliente.entity.VentaDetalle;
 import com.cibertec.cliente.entity.VentaDetallePK;
 import com.google.gson.Gson;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 @Controller
 @RequestMapping("/Venta")
@@ -111,6 +124,24 @@ public class registraVentaController {
 		seleccionados.clear();
 		return "redirect:/Venta/registro";
 	
+	}
+	
+	@RequestMapping("/PDF")
+	public ResponseEntity<byte[]> index() throws Exception, JRException {
+		
+		JRBeanCollectionDataSource jb = new JRBeanCollectionDataSource(seleccionados);
+		JasperReport compileReport = JasperCompileManager.compileReport(new FileInputStream("src/main/resources/invoice.jrxml"));
+		
+		HashMap<String, Object> map = new HashMap<>();
+		JasperPrint repot = JasperFillManager.fillReport(compileReport, map, jb);
+		JasperExportManager.exportReportToPdfFile(repot, "invoice.pdf");
+		
+		byte[] data = JasperExportManager.exportReportToPdf(repot);
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.set(HttpHeaders.CONTENT_DISPOSITION, "inline;filename=invoice.pdf");
+		
+		return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF).body(data);
 	}
 	
 
