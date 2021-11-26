@@ -20,7 +20,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Registro de Pedido</h1>
+            <h1>Registro de Compra</h1>
           </div>
         </div>
       </div><!-- /.container-fluid -->
@@ -35,13 +35,13 @@
 	              </div>
 	              <div class="card-body">
 	                <div class="row">
-	                  <div class="col-2">
+	                  <div class="col-1">
 	                    <input type="text" name="idProducto" id="id_producto_id" class="form-control" placeholder="Código" readonly="readonly"/>
 	                  </div>
 	                  <div class="col-2">
 	                    <input type="text" name="nombreProducto" id="id_producto_nombre" class="form-control" placeholder="Nombre" readonly="readonly"/>
 	                  </div>
-	                  <div class="col-2">
+	                  <div class="col-1">
 	                    <input type="text" name="precio" id="id_producto_precio" class="form-control" placeholder="Precio" readonly="readonly"/>
 	                  </div>
 	                  <div class="col-2">
@@ -52,6 +52,9 @@
 	                  </div>
 	                  <div class="col-2">
 	                    <input type="text" name="cantidad" id="id_producto_cantidad"  class="form-control"	placeholder="Ingrese la cantidad" onkeypress="return validarSoloNumerosEnteros(event);"  />
+	                  </div>
+	                  <div class="col-2">
+	                    <input type="text" name="cantidad" id="id_producto_descuento"  class="form-control"	placeholder="Ingrese el descuento"  />
 	                  </div>
 	                </div>
 	                <div class="form-group" style="text-align: center;">
@@ -75,6 +78,7 @@
 					                <th>Código</th>
 									<th>Nombre</th>
 									<th>Precio</th>
+									<th>Descuento</th>
 									<th>Cantidad</th>
 									<th>Marca</th>
 									<th>Subtotal</th>
@@ -91,7 +95,7 @@
            <div class="col-md-4">
 				<div class="card card-primary">
 	              <div class="card-header">
-	                <h3 class="card-title">Datos de la Venta</h3>
+	                <h3 class="card-title">Datos de la Compra</h3>
 	              </div>
 	              <!-- /.card-header -->
 	              <form id="id_form" accept-charset="UTF-8" class="form-horizontal" method="post" th:action="@{/Compra/registraPedido}" th:object="${compra}">
@@ -102,51 +106,53 @@
 		                </div>
 		                <div class="form-group">
 		                  <label for="exampleInputBorder">Proveedor</label>
-		                  <input type="text" name="proveedor_id" id="id_proveedor_ruc" class="form-control form-control-border" placeholder="Seleccione el proveedor" th:field="*{proveedor.ruc}" readonly="readonly"/>
+		                  <input type="text" name="proveedor_id" id="id_proveedor_nombre" class="form-control form-control-border" placeholder="Seleccione el proveedor"  readonly="readonly"/>
+		                  <input id="id_proveedor_ruc" type="hidden" th:field="*{proveedor.ruc}">
 		                  <br>		               
 		                  <button type="button" id="id_btnProveedor" data-toggle='modal' class='btn btn-primary'>BUSCA PROVEEDOR</button>
 		                </div>
 		                
 		                <div class="form-group">
 		                  <label for="exampleInputRounded0">Empleado</label>
-		                  <input type="text" name="idEmpleado" id="id_empleado_id" class="form-control form-control-border" placeholder="Seleccione el empleado" th:field="*{empleado.codEmp}" readonly="readonly">
-
+		                  <input type="text" name="idEmpleado" id="id_empleado_nombre" class="form-control form-control-border" placeholder="Seleccione el empleado"  readonly="readonly">
+                          <input id="id_empleado_id" type="hidden" th:field="*{empleado.codEmp}">
     					  <button type="button" id="id_btnEmpleado" data-toggle='modal' class='btn btn-primary'>BUSCA EMPLEADO</button>
 
 						</div> 
 		                
 		                <div class="form-group">
 		                  <label for="exampleInputRounded0">Fecha de Emision</label>
-		                  <input type="date" name="fechaEntrega" id="id_pedido_fechaEntrega" class="form-control form-control-border" th:field="*{emision}">
+		                  <input type="date" name="fechaEntrega" id="id_pedido_fechaEmision" class="form-control form-control-border" th:field="*{emision}">
 		                </div>
 		                
 		                <div class="form-group">
 		                  <label for="exampleInputRounded0">Fecha de Reparto</label>
-		                  <input type="date" name="fechaEntrega" id="id_pedido_fechaEntrega" class="form-control form-control-border" th:field="*{reparto}">
+		                  <input type="date" name="fechaEntrega" id="id_pedido_fechaReparto" class="form-control form-control-border" th:field="*{reparto}">
 		                </div>
 		                
 		                <div class="form-group">
 		                  <label for="exampleInputRounded0">Fecha de Vencimiento</label>
-		                  <input type="date" name="fechaEntrega" id="id_pedido_fechaEntrega" class="form-control form-control-border" th:field="*{vencim}">
+		                  <input type="date" name="fechaEntrega" id="id_pedido_fechaVencimiento" class="form-control form-control-border" th:field="*{vencim}">
 		                </div>
 		                
 		                <div class="form-group">
 		                  <label for="exampleSelectBorder">Tipo de Compra</label>
-		                  <select class="custom-select form-control-border" name="tipoCompra" id="id_pedido_fechaEntrega" th:field="*{tipoCompra}">
+		                  <select class="custom-select form-control-border" name="tipoCompra" id="id_tipoCompra" th:field="*{tipoCompra}">
 		                    <option value="BOLETA">BOLETA</option>
 		                    <option value="FACTURA">FACTURA</option>
 		                  </select>
 		                </div>
 		                <div class="form-group">
 		                  <label for="exampleSelectBorder">Tipo de Pago</label>
-		                  <select class="custom-select form-control-border" name="tipoPago" id="id_pedido_fechaEntrega" th:field="*{tipoPago}">
+		                  <select class="custom-select form-control-border" name="tipoPago" id="id_tipoPago" th:field="*{tipoPago}">
 		                    <option value="EFECTIVO">EFECTIVO</option>
 		                    <option value="CONTADO">CREDITO</option>
 		                  </select>
 		                </div>
 		               </div> 
 		              <div class="card-footer">
-                  			<button type="submit" id="Guardar" class="btn btn-danger"><i class="fas fa-save"></i>  REGISTRA COMPRA</button>
+                  			<button type="submit" id="Guardar" class="btn btn-danger" disabled="disabled"><i class="fas fa-save" ></i>  REGISTRA COMPRA</button>
+                            <a th:href="@{/Compra/PDF}" id="btn_pdf" target="_blank"  class="btn btn-success">Exportar PDF</a>
                       </div>
 		              
 		           </form>
@@ -366,6 +372,23 @@
 			
 		});
 		
+		//Al pulsar el botón pdf
+		$("#btn_pdf").click(function (){
+			var codigo = $("#id_pedido_codigoVenta").val();
+			var proveedor = $("#id_proveedor_ruc").val();
+			var empleado = $("#id_empleado_id").val();
+			var fecha_emision = $("#id_pedido_fechaEmision").val();
+			var fecha_reparto = $("#id_pedido_fechaReparto").val();
+			var fecha_vencimiento = $("#id_pedido_fechaVencimiento").val();
+			var tipo_compra = $("#id_tipoCompra").val();
+			var tipo_pago = $("#id_tipoPago").val();
+			console.log(codigo);
+			window.open('http://localhost:8092/Compra/PDF?codigo='+codigo+"&proveedor="+proveedor+"&empleado="+empleado+"&fecha_emision="+fecha_emision+"&fecha_reparto="+fecha_reparto
+					                                                     +"&fecha_vencimiento="+fecha_vencimiento+"&tipo_compra="+tipo_compra+"&tipo_pago="+tipo_pago, '_blank');
+            $('#Guardar').prop('disabled', false);
+	       
+		});
+		
 		//Al pulsar el botón cliente
 		$("#id_btnProveedor").click(function (){
 			muestraProveedor();
@@ -401,6 +424,7 @@
 		//Al pulsar el botón agregar
 		$("#id_btnAgregar").click(function (){
 			var var_pro = $("#id_producto_id").val();
+			var var_nom = $("#id_producto_nombre").val();
 			var var_can = $("#id_producto_cantidad").val();
 			var var_stk = $("#id_producto_stock").val();
 			var var_mar = $("#id_producto_marca").val();
@@ -434,7 +458,6 @@
 				$("#idMensaje").modal("show");
 			}else{
 				
-				var var_nom = $("#id_producto_nombre").val();
 				var var_pre = $("#id_producto_precio").val();
 						
 				//limpiar la tabla

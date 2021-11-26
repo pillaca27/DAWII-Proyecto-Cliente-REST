@@ -10,10 +10,6 @@
 
 <body class="hold-transition sidebar-mini layout-fixed" data-panel-auto-height-mode="height">
  	<div class="wrapper">
-
-    <div th:replace="./plantilla/UITemplateEmpleado :: arriba"></div>
-    
-	<div th:replace="./plantilla/UITemplateEmpleado :: derecha"></div>
 	
 	<div class="content-wrapper iframe-mode" data-widget="iframe" data-loading-screen="750">
 	  <section class="content-header">
@@ -127,7 +123,7 @@
 		               
 		                
 		              <div class="card-footer" style="text-align: center;">
-                  			<button type="submit" id="Guardar" class="btn btn-primary"><i class="fas fa-save"></i>  REGISTRA PEDIDO</button>
+                  			<button type="submit" id="Guardar" class="btn btn-primary" disabled="disabled"><i class="fas fa-save"></i>  REGISTRA PEDIDO</button>
                             <a th:href="@{/Venta/PDF}" id="btn_pdf" target="_blank"  class="btn btn-success">Exportar PDF</a>
                       </div>
                       </div>
@@ -336,6 +332,8 @@
 	
 	let URL="http://localhost:8091";
 	
+	
+	
 		$(document).ready(function() {
 			//Se añade los clientes a la tabla
 			$.getJSON("listaSeleccion",{}, function (data){
@@ -357,6 +355,8 @@
 			var fecha_ped = $("#id_pedido_fechaEntrega").val();
 			console.log(codigo);
 			window.open('http://localhost:8092/Venta/PDF?codigo='+codigo+"&nombre="+nombre+"&empleado="+empleado+"&fecha_ped="+fecha_ped, '_blank');
+            $('#Guardar').prop('disabled', false);
+	       
 		});
 		
 		
