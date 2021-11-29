@@ -57,7 +57,7 @@
 												 <div class="form-group has-feedback col-md-4">
 														<label for="exampleInputEmail1"><b>CODIGO</b></label>	
 														<i class="fas fa-file-signature form-control-feedback2"></i>	
-														<input type="text" class="form-control" id="idCodigo" name="codigo" placeholder="Ingresar Codigo" th:field="*{codUsuario}">																										
+														<input type="text" class="form-control" id="idCodigo" name="codigo" placeholder="Ingresar Codigo" th:field="*{codUsuario}" readonly="readonly">																										
 												</div>
 												<div class="form-group has-feedback col-md-4">
 													<label for="exampleInputEmail1"><b>USUARIO</b></label>
@@ -67,7 +67,7 @@
 												<div class="form-group has-feedback col-md-4">
 													<label for="exampleInputEmail1"><b>CONTRASEÑA</b></label>
 													<i class="fas fa-pen-fancy form-control-feedback2"></i>
-													<input type="text" class="form-control" id="idPassword"  name="password" placeholder="Ingresar Password" th:field="*{password}">	
+													<input type="password" class="form-control" id="idPassword"  name="password" placeholder="Ingresar Password" th:field="*{password}">	
 												</div>
 												
 												
@@ -149,6 +149,8 @@
 	</script>
 
 	<script>
+	let URL="http://localhost:8091/usuario";
+	
 	$(document).on("click",".btn-datos",function(){
 		let cod,usu,pas,dis;
 		cod=$(this).parents("tr").find("td")[0].innerHTML;
@@ -156,11 +158,20 @@
 		pas=$(this).parents("tr").find("td")[2].innerHTML;
 		dis=$(this).parents("tr").find("td")[3].innerHTML;
 
-
 		$("#idCodigo").val(cod);
 		$("#idUsuario").val(usu);
 		$("#idPassword").val(pas);
-		document.querySelector("#idDistrito").value="Prueba";
+		$("#idDireccion").val(dis);
+		
+		axios.get(URL+"/buscar/"+cod)
+		  .then(function (response) {
+			console.log(response);
+			document.querySelector("#idDistrito").value=response.data.tipo.codigo;
+		  })
+		  .catch(function (error) {
+		    console.log(error);
+		  })
+		
 
 
 
@@ -249,12 +260,7 @@
 	                    validators: {    
 	                        notEmpty: {    
 	                            message: 'Ingrese Password'    
-	                        },
-	                        stringLength :{
-	     	                	message:'El password es obligatorio',
-	     	                	min : 15,
-	     	                	max : 30
-	     	                },
+	                        }
 	                    }  
 	                },
 	                distrito: {
