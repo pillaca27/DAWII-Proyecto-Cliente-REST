@@ -328,6 +328,7 @@
 		  confirmButtonText:'Cerrar'
 		 })
 </script>
+
 <script type="text/javascript">
 	
 	let URL="http://localhost:8091";
@@ -385,6 +386,10 @@
 		//Al escribir en la caja de texto del cliente
 		$("#id_txtProducto").keyup( function (e){
 			muestraProducto();
+		});
+		
+		$("#id_txtEmpleado").keyup( function (e){
+			muestraEmpleado();
 		});
 		
 		//Se anula el enter
@@ -529,10 +534,10 @@
 		});*/
 		
 		function muestraCliente(){
-	
+			var var_cliente = $("#id_txtCliente").val();
 			//limpiar la tabla
 			$("#id_table_cliente tbody").empty();
-			axios.get(URL+"/cliente/listar")
+			axios.get(URL+"/cliente/listar/"+var_cliente)
 	  			.then(function (response) {
 				console.log(response);
 				for(let i=0;i<response.data.length;i++){
@@ -543,8 +548,7 @@
 						+response.data[i].distrito.nombre+"</td><td><button type='button' class='btn btn-default' aria-label='Left Align' onclick=\"f_seleccione_cliente('"+response.data[i].dni+"','"+response.data[i].nombre+"','"+response.data[i].telefono+"','"+response.data[i].direccion+"','"+response.data[i].distrito.nombre+"');\" ><i class='fas fa-check'></i></button></td></tr>");				
 				}
 				
-				
-				
+		
 			  })
 			  .catch(function (error) {
 			    console.log(error);
@@ -552,10 +556,10 @@
 		
 		}
 		function muestraEmpleado(){
-	
+			var var_empleado = $("#id_txtEmpleado").val();
 			//limpiar la tabla
 			$("#id_table_empleado tbody").empty();
-			axios.get(URL+"/empleado/listar")
+			axios.get(URL+"/empleado/listar/"+var_empleado)
 	  			.then(function (response) {
 				console.log(response);
 				for(let i=0;i<response.data.length;i++){
@@ -577,10 +581,10 @@
 		
 		}
 		function muestraProducto(){
-	
+			var var_producto = $("#id_txtProducto").val();
 			$("#id_table_producto tbody").empty();
 			
-			axios.get(URL+"/producto/listar")
+			axios.get(URL+"/producto/listar/"+var_producto)
 				.then(function (response) {
 			console.log(response);
 			for(let i=0;i<response.data.length;i++){

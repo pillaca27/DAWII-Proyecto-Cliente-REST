@@ -407,13 +407,17 @@
 		});
 
 		//Al escribir en la caja de texto del cliente
-		$("#id_txtCliente").keyup( function (e){
+		$("#id_txtProveedor").keyup( function (e){
 			muestraProveedor();
 		});
 		
 		//Al escribir en la caja de texto del cliente
 		$("#id_txtProducto").keyup( function (e){
 			muestraProducto();
+		});
+		
+		$("#id_txtEmpleado").keyup( function (e){
+			muestraEmpleado();
 		});
 		
 		//Se anula el enter
@@ -502,10 +506,10 @@
 		
 		
 		function muestraProveedor(){
-
+			var var_porveedor = $("#id_txtProveedor").val();
 			//limpiar la tabla
 			$("#id_table_proveedor tbody").empty();
-			axios.get(URL+"/proveedor/listar")
+			axios.get(URL+"/proveedor/listar/"+var_porveedor)
 	  			.then(function (response) {
 				console.log(response);
 				for(let i=0;i<response.data.length;i++){
@@ -526,10 +530,10 @@
 		
 		}
 		function muestraEmpleado(){
-
+			var var_empleado = $("#id_txtEmpleado").val();
 			//limpiar la tabla
 			$("#id_table_empleado tbody").empty();
-			axios.get(URL+"/empleado/listar")
+			axios.get(URL+"/empleado/listar/"+var_empleado)
 	  			.then(function (response) {
 				console.log(response);
 				for(let i=0;i<response.data.length;i++){
