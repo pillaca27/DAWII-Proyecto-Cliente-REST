@@ -2,71 +2,66 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="./plantilla/UITemplateEmpleado :: head">
 <meta charset="UTF-8">
-<title>Crud Cargo</title>
+<title>Crud Empleado</title>
 </head>
+
 <body class="hold-transition sidebar-mini layout-fixed" data-panel-auto-height-mode="height">
  	<div class="wrapper">
-	
-		<div class="content-wrapper iframe-mode" data-widget="iframe" data-loading-screen="750">
-		     <div class="card card-primary">
-              <div class="card-header">
-                <h3 class="card-title">Mantenimiento de Empleado</h3>
-              </div>
-             <div class="card-body"> 
-	              <h3 class="text-center mt-4">LISTA DE EMPLEADO</h3>
-				
-				<button type="button" class="btn btn-warning mt-5" data-toggle="modal" data-target="#modalEmpleado" id="btn-nuevo">
-				 <i class="far fa-file"></i> NUEVO EMPLEADO
-				</button>
-				<div class=" mt-2">
-		
-					<table class="table table-striped table-bordered" id="example1">
-								  <thead>
-								   <tr>
-						        <th>CODIGO</th>
-						        <th>NOMBRE</th>
-						        <th>DNI</th>
-						        <th>TELEFONO</th>
-						        <th>DIRECCION</th>
-						        <th>DISTRITO</th>
-						        <th>CARGO</th>
-						              
-						            </tr>
-								  </thead>
-								  <tbody>
-								<tr th:each="bean:${empleados}">
-								<td th:text="${bean.codEmp}"></td>
-								<td th:text="${bean.nombre}"></td>
-								<td th:text="${bean.dni}"></td>
-								<td th:text="${bean.telefono}"></td>
-								<td th:text="${bean.direccion}"></td>
-								<td th:text="${bean.distrito.nombre}"></td>
-								<td th:text="${bean.cargo.nombre}"></td> 
-			        		    <td><a class="btn btn-info btn-datos" data-toggle="modal" data-target="#modalEmpleado">Ver Datos</a></td>
-								<td><a class="btn btn-danger btn-eliminar"><i class="far fa-trash-alt"></i></a></td>
-	
-									  
-									
-									</tr>
-								  </tbody>
-					</table>
-				</div>
+	<div class="content-wrapper iframe-mode" data-widget="iframe" data-loading-screen="750">
+	<div class="card card-primary">
+		<div class="card-header">
+			<h3 class="card-title">Mantenimiento de Empleado</h3>
+		</div>
+		<div class="card-body"> 
+			<h3 class="text-center mt-4">LISTA DE EMPLEADOS</h3>		
+			<button type="button" class="btn btn-warning mt-5" data-toggle="modal" data-target="#modalEmpleado" id="btn-nuevo">
+		 		<i class="far fa-file"></i> NUEVO EMPLEADO
+			</button>
+			<br>
+			<div class=" mt-2">
+				<table class="table table-striped table-bordered" id="example1">
+					<thead>
+						<tr>
+						<th>CODIGO</th>
+						<th>NOMBRE</th>
+						<th>DNI</th>
+						<th>TELEFONO</th>
+						<th>DIRECCION</th>
+						<th>DISTRITO</th>
+						<th>CARGO</th>
+		              	</tr>
+				  	</thead>
+					<tbody>
+					
+						<tr th:each="bean:${empleados}">
+						<td th:text="${bean.codEmp}"></td>
+						<td th:text="${bean.nombre}"></td>
+						<td th:text="${bean.dni}"></td>
+						<td th:text="${bean.telefono}"></td>
+						<td th:text="${bean.direccion}"></td>
+						<td th:text="${bean.distrito.nombre}"></td>
+						<td th:text="${bean.cargo.nombre}"></td> 
+		       		    <td><a class="btn btn-info btn-datos" data-toggle="modal" data-target="#modalEmpleado">Ver Datos</a></td>
+						<td><a class="btn btn-danger btn-eliminar"><i class="far fa-trash-alt"></i></a></td>									
+						</tr>
+					</tbody>
+				</table>
 			</div>
-	
-			<div class="modal fade" id="modalEmpleado">
-						<div class="modal-dialog modal-xl">		
-							<div class="modal-content">
-								<div class="modal-header bg-blue-darker">
-									<h4 class="modal-title text-white">EMPLEADO</h4>
-								</div>
-								<div class="modal-body">
+		</div>
+		<div class="modal fade" id="modalEmpleado">
+			<div class="modal-dialog modal-xl">		
+			<div class="modal-content">
+			<div class="modal-header bg-blue-darker">
+				<h4 class="modal-title text-white">EMPLEADO</h4>
+			</div>
+			<div class="modal-body">
 									<form method="POST" id="idRegistra" th:action="@{/CRUDempleado/registrar}" th:object="${empleado}">	
 										<div class="container">
 											<div class="row">
 												 <div class="form-group has-feedback col-md-4">
 														<label for="exampleInputEmail1"><b>CODIGO</b></label>	
 														<i class="fas fa-file-signature form-control-feedback2"></i>	
-														<input type="text" class="form-control" id="idCodigo" name="codigo" placeholder="Ingresar Codigo" th:field="*{codEmp}">																										
+														<input type="text" class="form-control" id="idCodigo" name="codigo" placeholder="Ingresar Codigo" th:field="*{codEmp}" readonly="readonly">																										
 												</div>
 												<div class="form-group has-feedback col-md-4">
 													<label for="exampleInputEmail1"><b>NOMBRE</b></label>
